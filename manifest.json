@@ -1,0 +1,15 @@
+{
+  "name": "一键考勤",
+  "description": "目前仅支持一键解释【日常加班】（9:00-18:00弹性工作、2小时计加班工作制）",
+  "version": "0.2",
+  "permissions": [
+    "tabs", "http://*/*", "https://*/*"
+  ],
+  "browser_action": {
+      "default_title": "一键考勤",
+      "default_icon": "icon.png",
+      "default_popup": "popup.html"
+  },
+  "icons": { "64": "icon.png" },
+  "manifest_version": 2
+}
