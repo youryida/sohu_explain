@@ -100,10 +100,11 @@ function overtimeExplan(){
 	    tr1.find(".selEndMinute").val(midM);
 	    if($(this).find(".editTr").length==1) tr1.find(".inAdd").click();
 
-	    if(h<11){//实际时间不够 按照OVERTIME_FIX展开的 补齐
+	    if(h<=11){//实际时间不够 按照OVERTIME_FIX展开的 补齐
 	        endH=midH+2;
-	        endM=startM;
+	        endM=Math.max(startM,endM);
 	    }
+
 	    var tr2=tr1.next();
 	    tr2.find(".selHoliday").val("b3cea43e-0df6-4730-8d94-49acbdcb45be");
 	    chanageSelect(tr2.find(".selHoliday")[0]);
