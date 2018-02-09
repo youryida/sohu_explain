@@ -24,6 +24,7 @@ if(!nowUrl.match(URL_OA)){
 			//location.href='javascript:alert(1);location.href="'+targetUrl+'"';
 		}
 	}else if(nowUrl.match(URL_EXPLAIN)){
+		topFix();
 		slideDown();
 	}	
 }
@@ -32,7 +33,7 @@ if(!nowUrl.match(URL_OA)){
 /*进入独立解释页之后*/
 function isOvertime(oLine){//日常加班 如'09:40:11~20:22:42'
 	var WORKTIME=9*3600,OVERTIME=2*3600;//正常9小时,加班2小时
-	var OVERTIME_FIX=10*60;//加班时间修正-10分钟 
+	var OVERTIME_FIX=(getQS("fix") || 10) *60;//加班时间修正-10分钟 
 	var oWork=oLine.find(".x-grid3-col-3");
 	var txtWT=oWork.text();
     if(!/\d~\d/.test(txtWT)) return false;
@@ -48,6 +49,21 @@ function isOvertime(oLine){//日常加班 如'09:40:11~20:22:42'
 }
 function isRestday(oLine){//休息日有打开的
 	return oLine.find(".attValue").text()=="休息日" && oLine.find(".x-grid3-col-3").text()!="无打卡记录";
+}
+
+
+//临时补坑 20180101左右之后，iframe多了个调用top.window，没有父窗口会报错，这里先粗暴处理下
+function topFix(){
+	window.top.window.LoadMsgBegin=function(){};
+	window.top.window.LoadMsgEnd=function(){};	
+}
+
+//留个后门 可以通过 url参数 修改 OVERTIME_FIX
+function getQS(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return decodeURIComponent(r[2]);
+    return null;
 }
 
 //展开异常、周末打开和日常加班的
@@ -100,7 +116,7 @@ function overtimeExplan(){
 	    tr1.find(".selEndMinute").val(midM);
 	    if($(this).find(".editTr").length==1) tr1.find(".inAdd").click();
 
-	    if(h<=11){//实际时间不够 按照OVERTIME_FIX展开的 补齐
+	    if(h<=11){//实际时间不够 按照 OVERTIME_FIX 展开的 补齐
 	        endH=midH+2;
 	        endM=Math.max(startM,endM);
 	    }
