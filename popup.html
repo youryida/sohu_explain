@@ -1,24 +1,42 @@
-﻿<!doctype html>
+﻿<!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title></title>
     <style>
-    	body {width: 300px; background: #ddd; font: 14px 'microsoft yahei'}
-    	#btnGo {width: 100%; height: 50px; font: 24px 'microsoft yahei';margin-top: 30px; }
+      body {
+        width: 300px;
+        background: #ddd;
+        font: 14px "microsoft yahei";
+      }
+      #btnGo {
+        width: 100%;
+        height: 50px;
+        font: 24px "microsoft yahei";
+        margin-top: 30px;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <div>
-    <p>进入考勤解释页面 → 点击开始解释</p><br>
-	    <p>注意：<br>
-            1. 目前仅支持一键解释【日常加班】（9:00-18:00弹性工作、2小时计加班工作制）;<br>
-            2. contact: xuefengliu@sohu-inc.com
-        </p>
+      <p>
+        step1. 进入新版(201907)考勤页面<br />
+        step2. 点击插件图标自动开始解释
+      </p>
+      <br />
+      <p>
+        注意：<br />
+        1.
+        目前仅支持一键解释【日常加班】（9:00-18:00弹性工作、2小时计加班工作制）<br />
+        2.
+        <a
+          href="https://github.com/youryida/sohu_explain/issues"
+          target="_blank"
+          >问题反馈</a
+        >
+      </p>
     </div>
-    <button id="btnGo">开始解释</button>
+    <!-- <button id="btnGo">开始解释</button> -->
     <script src="popup.js"></script>
-</body>
-
+  </body>
 </html>

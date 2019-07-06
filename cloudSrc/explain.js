@@ -1,32 +1,23 @@
-﻿/**
- * 20190707后 OA上线了新版考勤系统
- * 该JS弃用
- */
-var URL_OA = "http://oa.sohu-inc.com";
-// var URL_EXPLAIN = "AnomalyInterpretationEx.aspx";
-var URL_EXPLAIN = "AnomalyInterpretationWF.aspx"; //20190707 改版
-var nowUrl = location.href;
-var preTip = "\n\n如右侧出现[开始解释]按钮，先忽略";
 var WORK_ROLE_BEGIN = 9; //解释加班需要按标准时开始计时 来的再早也是按九点
-
-if (!nowUrl.match(URL_OA)) {
-  alert("请先进入【考勤解释页面】" + preTip);
-  location.href = URL_OA;
-} else {
-  if (frames.length > 0) {
-    var fraUrl = frames[0].location.href;
-    if (!fraUrl.match(URL_EXPLAIN)) {
-      alert("请先进入【考勤解释页面】" + preTip);
-    } else {
-      //var targetUrl=frames[0].location.href;
-      location.href = frames[0].location.href;
-      alert("稍等片刻，页面自动跳转后再来点我" + preTip);
-      //location.href='javascript:alert(1);location.href="'+targetUrl+'"';
-    }
-  } else if (nowUrl.match(URL_EXPLAIN)) {
-    topFix();
-    slideDown();
+var ASPX_EXPLAIN = "AnomalyInterpretationApprove.aspx";
+var URL_WORKLIST =
+  "http://skd.sohu-inc.com/UI/PC/index.html#/handlelist?showHeader=1";
+var nowUrl = location.href;
+// 页面引导
+if (nowUrl.indexOf(ASPX_EXPLAIN) == -1) {
+  if (nowUrl.indexOf(URL_WORKLIST) == -1) {
+    var bl = confirm("确定前往【考勤解释】吗？");
+    if (bl) location.href = URL_WORKLIST;
+  } else {
+    alert("请点击要解释的任务单号");
   }
+} else {
+  // ui展开
+  slideDown();
+  // 解释
+  setTimeout(() => {
+    overtimeExplain();
+  }, 400);
 }
 
 /*进入独立解释页之后*/
@@ -56,12 +47,6 @@ function isRestday(oLine) {
     oLine.find(".attValue").text() == "休息日" &&
     oLine.find(".x-grid3-col-3").text() != "无打卡记录"
   );
-}
-
-//临时补坑 20180101左右之后，iframe多了个调用top.window，没有父窗口会报错，这里先粗暴处理下
-function topFix() {
-  window.top.window.LoadMsgBegin = function() {};
-  window.top.window.LoadMsgEnd = function() {};
 }
 
 //留个后门 可以通过 url参数 修改 OVERTIME_FIX
@@ -165,7 +150,7 @@ function overtimeExplain() {
     tr2.find(".endTime").val(endH);
     tr2.find(".selEndMinute").val(endM);
     var box = tr2.closest(".inOuter");
-    box.find("input.text_5").click(); //保存并收起 先不要提交
+    box.find("input[value=保存并收起]").click(); //保存并收起 先不要提交
   });
   alert(
     "稍等片刻(10-40秒)，\n【日常加班】部分的考勤就解释ok了！\n\n未收起的休息日、异常、以及其他部分请自行解释！"
